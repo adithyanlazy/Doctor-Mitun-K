@@ -1,0 +1,351 @@
+@import 'tailwindcss';
+
+/* ============================================================
+   DR. MITHUN K — Orthodontics · Design tokens
+   Editorial layout, client brand palette: navy / teal / royal blue / platinum.
+   Fraunces / Inter / IBM Plex Mono.
+
+   NOTE on token names: the `--color-emerald*` and `--color-gold*` names are
+   historical (this build has been through two palettes). They are now:
+     emerald* = navy family  (dark surfaces, deep text)
+     gold*    = teal family  (accents, rules, sub-headings, icons)
+   Values are the source of truth — do not read meaning into the names.
+   ============================================================ */
+@theme {
+  --color-ink: #0B1F3A;            /* primary navy — body text & headings */
+  --color-emerald: #071426;        /* darkest navy — dark sections/footer */
+  --color-emerald-700: #0B1F3A;
+  --color-emerald-600: #12335C;    /* hover on dark / dark buttons */
+  --color-emerald-400: #6B7C93;    /* muted slate */
+  --color-emerald-200: #C6D2E2;    /* light text on navy */
+
+  /* accent = teal (token names kept as `gold*`) */
+  --color-gold: #00A8A8;           /* teal — on dark & decorative */
+  --color-gold-400: #2FC7C7;       /* lighter teal — on dark */
+  --color-gold-deep: #0A6E6E;      /* text-safe teal on light bg (5.8:1) */
+
+  /* call-to-action = royal blue (buttons, links, highlights) */
+  --color-cta: #2D6CDF;
+  --color-cta-deep: #1F55BC;       /* hover */
+
+  /* surfaces — cool light */
+  --color-cream: #F8FAFC;          /* page bg */
+  --color-ivory: #FFFFFF;          /* card bg */
+  --color-sage: #EEF2F7;
+  --color-sage-200: #E3E9F1;
+  --color-line: #D9D9D9;           /* platinum hairline */
+
+  --font-display: 'Fraunces', ui-serif, Georgia, serif;
+  --font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- base ---------- */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: auto; /* Lenis drives scrolling */
+}
+
+body {
+  margin: 0;
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-emerald);
+  color: var(--color-cream);
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* focus */
+:focus-visible {
+  outline: 2px solid var(--color-emerald-600);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-optical-sizing: auto;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+/* ---------- display type helpers ---------- */
+.font-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+}
+.font-mono {
+  font-family: var(--font-mono);
+}
+.italic-fraunces {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* portraits render editorial black-and-white; before/after teeth stay color */
+.portrait-bw {
+  filter: grayscale(1) contrast(1.03);
+}
+
+/* eyebrow / kicker */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- decorative bits ---------- */
+.hairline {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--color-gold) 55%, transparent),
+    transparent
+  );
+}
+
+.glass {
+  background: color-mix(in srgb, var(--color-cream) 10%, transparent);
+  backdrop-filter: blur(14px) saturate(1.1);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+}
+.glass-light {
+  background: color-mix(in srgb, #ffffff 62%, transparent);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+}
+
+/* grain overlay (subtle film) — no blend-mode (keeps compositing cheap) */
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.14;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* navy mesh backdrop — the brand gradient (navy → teal) read as ambient light */
+.mesh-emerald {
+  background-color: var(--color-emerald);
+  background-image:
+    radial-gradient(60% 60% at 82% 8%, #0F2A4D 0%, transparent 60%),
+    radial-gradient(50% 60% at 6% 100%,
+      color-mix(in srgb, var(--color-gold) 18%, transparent) 0%, transparent 55%);
+}
+
+/* accent text — teal on light, teal-400 on dark (set by the caller's tone) */
+.text-gold-grad {
+  color: var(--color-gold-deep);
+  -webkit-text-fill-color: currentColor;
+}
+.mesh-emerald .text-gold-grad,
+.bg-emerald .text-gold-grad {
+  color: var(--color-gold-400);
+}
+
+/* buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+  padding: 0.95rem 1.6rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    transform 0.35s var(--ease-out-soft),
+    background-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease;
+  will-change: transform;
+}
+/* primary CTA — royal blue per the brand kit (`btn-gold` name kept to avoid churn) */
+.btn-gold {
+  background: var(--color-cta);
+  color: #ffffff;
+  box-shadow: 0 12px 30px -12px color-mix(in srgb, var(--color-cta) 65%, transparent);
+}
+.btn-gold:hover { background: var(--color-cta-deep); }
+
+/* secondary accent button — teal */
+.btn-teal {
+  background: var(--color-gold);
+  color: #ffffff;
+  box-shadow: 0 12px 30px -12px color-mix(in srgb, var(--color-gold) 60%, transparent);
+}
+.btn-teal:hover { background: var(--color-gold-deep); }
+.btn-emerald {
+  background: var(--color-emerald);
+  color: var(--color-cream);
+}
+.btn-emerald:hover {
+  background: var(--color-emerald-600);
+}
+.btn-outline {
+  border: 1px solid color-mix(in srgb, var(--color-emerald) 30%, transparent);
+  color: var(--color-emerald);
+  background: transparent;
+}
+.btn-outline:hover {
+  background: color-mix(in srgb, var(--color-emerald) 8%, transparent);
+}
+.btn-ghost-light {
+  border: 1px solid color-mix(in srgb, var(--color-cream) 35%, transparent);
+  color: var(--color-cream);
+  background: transparent;
+}
+.btn-ghost-light:hover {
+  background: color-mix(in srgb, var(--color-cream) 10%, transparent);
+}
+
+/* card */
+.card-cream {
+  background: var(--color-ivory);
+  border: 1px solid var(--color-line);
+  border-radius: 1.25rem;
+}
+
+/* section rhythm */
+.section {
+  position: relative;
+  padding-block: clamp(4.5rem, 9vw, 8.5rem);
+}
+
+.container-x {
+  width: 100%;
+  max-width: 78rem;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 3rem);
+}
+
+/* fluid display sizes.
+   d-hero is capped by viewport HEIGHT as well as width: on a 1366x768 laptop
+   the usable viewport is only ~580px tall once browser chrome is subtracted,
+   and a width-only clamp made the hero taller than the screen. */
+.d-hero {
+  font-size: clamp(2.75rem, min(7.2vw, 11vh), 6.1rem);
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+}
+.d-section {
+  font-size: clamp(2.1rem, 4.6vw, 3.7rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+
+/* ---------- keyframes ---------- */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: marquee 38s linear infinite;
+}
+.marquee-track:hover .animate-marquee {
+  animation-play-state: paused;
+}
+
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+.animate-floaty {
+  animation: floaty 6s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.animate-spin-slow {
+  animation: spin-slow 26s linear infinite;
+}
+
+/* scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-cream);
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-emerald) 45%, var(--color-cream));
+  border-radius: 999px;
+  border: 2px solid var(--color-cream);
+}
+
+/* ---------- reduced motion ----------
+   Intentionally NOT globally disabling animation here: this is a marketing
+   demo where the motion is core to the brand experience, so entrance
+   animations, reveals and the smile-arc play for all visitors. Framer is
+   forced with <MotionConfig reducedMotion="never">. Only heavy ambient loops
+   are toned down for reduced-motion users. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-floaty,
+  .animate-spin-slow {
+    animation: none !important;
+  }
+}
