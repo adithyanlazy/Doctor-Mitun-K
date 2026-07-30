@@ -186,7 +186,13 @@ h4 {
   color: var(--color-gold-400);
 }
 
-/* buttons */
+/* buttons
+   These live in `@layer components` deliberately. Unlayered CSS outranks every
+   Tailwind layer, so while these rules sat outside a layer they beat the
+   utilities written next to them — `btn btn-gold px-5 py-2.5 text-sm` in the
+   header silently rendered at the full 0.95rem/1.6rem button size and wrapped
+   onto two lines. Inside the components layer the utilities win, as written. */
+@layer components {
 .btn {
   display: inline-flex;
   align-items: center;
@@ -262,6 +268,7 @@ h4 {
   border: 1px solid var(--color-line);
   border-radius: 1.25rem;
 }
+} /* end @layer components */
 
 /* section rhythm */
 .section {
@@ -358,10 +365,17 @@ h4 {
   textarea {
     font-size: 16px;
   }
-  /* two CTAs side by side have to survive a 375px column */
-  .btn {
-    padding: 0.85rem 1.35rem;
-    font-size: 0.92rem;
+}
+
+/* Same layering rule as the button block above: inside `components` so a
+   `px-*`/`text-*` utility on a specific button still wins here. */
+@layer components {
+  @media (max-width: 640px) {
+    /* two CTAs side by side have to survive a 375px column */
+    .btn {
+      padding: 0.85rem 1.35rem;
+      font-size: 0.92rem;
+    }
   }
 }
 

@@ -100,7 +100,7 @@ export default function Nav() {
             <button
               type="button"
               onClick={() => openBooking()}
-              className="btn btn-gold hidden px-5 py-2.5 text-sm sm:inline-flex"
+              className="btn btn-gold hidden shrink-0 whitespace-nowrap px-5 py-2.5 text-sm sm:inline-flex"
             >
               Book now
             </button>
