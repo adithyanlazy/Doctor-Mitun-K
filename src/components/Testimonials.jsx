@@ -1,7 +1,27 @@
 import { Quote } from 'lucide-react'
-import Reveal from './ui/Reveal'
 import Eyebrow from './ui/Eyebrow'
+import SwipeCarousel from './ui/SwipeCarousel'
 import { testimonials } from '../lib/data'
+
+function TestimonialCard({ t }) {
+  return (
+    <figure className="card-cream flex h-full flex-col p-7">
+      <Quote size={30} className="text-gold/50" fill="currentColor" strokeWidth={0} />
+      <blockquote className="text-ink/75 mt-4 flex-1 leading-relaxed">“{t.quote}”</blockquote>
+      <figcaption className="mt-6 flex items-center gap-3 border-t border-line pt-5">
+        <img
+          src={t.avatar}
+          alt={t.name}
+          className="portrait-bw h-12 w-12 rounded-full object-cover ring-1 ring-gold/40"
+        />
+        <div>
+          <div className="font-display text-ink text-lg leading-none">{t.name}</div>
+          <div className="text-ink/50 mt-1 text-sm">{t.role}</div>
+        </div>
+      </figcaption>
+    </figure>
+  )
+}
 
 export default function Testimonials() {
   return (
@@ -18,28 +38,15 @@ export default function Testimonials() {
           {/* TODO(client): swap for real, consented patient feedback + video testimonials. */}
         </div>
 
-        <div className="mt-12 grid gap-5 md:grid-cols-3">
-          {testimonials.map((t, i) => (
-            <Reveal key={t.name} delay={i * 0.1}>
-              <figure className="card-cream flex h-full flex-col p-7">
-                <Quote size={30} className="text-gold/50" fill="currentColor" strokeWidth={0} />
-                <blockquote className="text-ink/75 mt-4 flex-1 leading-relaxed">
-                  “{t.quote}”
-                </blockquote>
-                <figcaption className="mt-6 flex items-center gap-3 border-t border-line pt-5">
-                  <img
-                    src={t.avatar}
-                    alt={t.name}
-                    className="portrait-bw h-12 w-12 rounded-full object-cover ring-1 ring-gold/40"
-                  />
-                  <div>
-                    <div className="font-display text-ink text-lg leading-none">{t.name}</div>
-                    <div className="text-ink/50 mt-1 text-sm">{t.role}</div>
-                  </div>
-                </figcaption>
-              </figure>
-            </Reveal>
-          ))}
+        <div className="mt-12">
+          <SwipeCarousel
+            items={testimonials}
+            ariaLabel="Patient reviews"
+            idPrefix="review-slide"
+            getItemKey={(t) => t.name}
+            getDotLabel={(t) => `Show review from ${t.name}`}
+            renderSlide={(t) => <TestimonialCard t={t} />}
+          />
         </div>
       </div>
     </section>

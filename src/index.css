@@ -220,6 +220,17 @@ h4 {
 }
 .btn-gold:hover { background: var(--color-cta-deep); }
 
+/* header CTA — same pill language as .btn-gold, scaled for the bar, darker blue */
+.btn-gold.btn-nav {
+  background: var(--color-cta-deep);
+  box-shadow: 0 10px 24px -10px color-mix(in srgb, var(--color-cta-deep) 70%, transparent);
+  padding: 0.65rem 1.2rem;
+  font-size: 0.875rem;
+}
+.btn-gold.btn-nav:hover {
+  background: color-mix(in srgb, var(--color-cta-deep) 88%, var(--color-ink));
+}
+
 /* WhatsApp CTA */
 .btn-whatsapp {
   background: #25d366;

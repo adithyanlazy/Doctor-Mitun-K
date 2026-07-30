@@ -100,17 +100,16 @@ export default function Nav() {
             <button
               type="button"
               onClick={() => openBooking()}
-              className="btn btn-gold hidden shrink-0 whitespace-nowrap px-5 py-2.5 text-sm sm:inline-flex"
+              className="btn btn-gold btn-nav inline-flex shrink-0 whitespace-nowrap"
             >
               Book now
             </button>
-            {/* On a phone the wordmark leaves no room for the "Book now" pill, and
-                calling is the action most visitors want — so the bar carries a
-                dial button instead, sized for a thumb. */}
+            {/* Dial shortcut only on mid-width mobile — on the narrowest screens the
+                bar keeps Book now + menu; calling stays in the drawer and footer. */}
             <a
               href={`tel:${brand.phoneHref}`}
               aria-label={`Call ${brand.doctor}`}
-              className={`grid h-11 w-11 place-items-center rounded-full border transition-colors lg:hidden ${
+              className={`hidden h-11 w-11 place-items-center rounded-full border transition-colors sm:grid lg:hidden ${
                 dark
                   ? 'border-line bg-ivory/80 text-emerald'
                   : 'border-cream/25 bg-cream/10 text-cream'

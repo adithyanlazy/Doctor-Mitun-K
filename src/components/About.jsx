@@ -1,16 +1,15 @@
-import { Check, ArrowRight, Award, BookOpen, Medal, Trophy } from 'lucide-react'
+import { Check, ArrowRight } from 'lucide-react'
 import Reveal from './ui/Reveal'
 import Eyebrow from './ui/Eyebrow'
+import { honorIconMap } from './ui/honorIcons'
 import { socialLinks } from './ui/social'
 import { brand, img, credentials, honors } from '../lib/data'
 import { useBooking } from '../lib/bookingContext'
 
-const honorIcons = [Medal, Trophy, Award, BookOpen]
-
 export default function About() {
   const { openBooking } = useBooking()
   return (
-    <section id="about" className="bg-ivory section scroll-mt-20">
+    <section id="about" className="bg-ivory section scroll-mt-20 [padding-bottom:clamp(2rem,5vw,4.5rem)]">
       <div className="container-x grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
         {/* image */}
         <Reveal className="order-2 lg:order-1">
@@ -90,19 +89,19 @@ export default function About() {
       </div>
 
       {/* awards & recognition */}
-      <div className="container-x mt-16 lg:mt-20">
-        <div className="hairline mb-10" />
+      <div className="container-x mt-10 sm:mt-14 lg:mt-20">
+        <div className="hairline mb-5 sm:mb-6" />
         <Eyebrow>Awards &amp; recognition</Eyebrow>
-        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-5 grid gap-3 sm:mt-6 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4 lg:gap-5">
           {honors.map((h, i) => {
-            const Icon = honorIcons[i % honorIcons.length]
+            const Icon = honorIconMap[h.icon]
             return (
               <Reveal key={h.title} delay={i * 0.08}>
-                <div className="card-cream h-full p-6">
+                <div className="card-cream h-full p-5 sm:p-6">
                   <span className="grid h-11 w-11 place-items-center rounded-xl bg-emerald text-gold-400">
-                    <Icon size={20} strokeWidth={1.7} />
+                    <Icon size={22} />
                   </span>
-                  <h3 className="font-display text-ink mt-5 text-lg leading-snug">{h.title}</h3>
+                  <h3 className="font-display text-ink mt-4 text-lg leading-snug sm:mt-5">{h.title}</h3>
                   <p className="text-ink/55 mt-1.5 text-sm">{h.note}</p>
                 </div>
               </Reveal>

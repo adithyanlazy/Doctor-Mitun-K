@@ -355,18 +355,22 @@ export const honors = [
   {
     title: 'Dual Royal College Membership',
     note: 'M.Orth from both Glasgow and Edinburgh — held by few orthodontists in India',
+    icon: 'college',
   },
   {
     title: 'Highly Commendable Orthodontist of the Year',
     note: 'Famdent Awards',
+    icon: 'trophy',
   },
   {
     title: 'International Advisor',
     note: 'Royal College of Physicians & Surgeons of Glasgow',
+    icon: 'advisor',
   },
   {
     title: 'Published Researcher & Scientific Reviewer',
     note: 'Peer-reviewed orthodontic literature',
+    icon: 'research',
   },
 ]
 
