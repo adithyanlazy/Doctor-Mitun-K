@@ -44,9 +44,10 @@ export default function Hero() {
   // The whole entrance waits for the preloader — otherwise it plays out behind
   // the curtain and the visitor is handed a hero that has already arrived.
   const ready = useAppReady()
-  const play = ready ? 'show' : 'hidden'
-  const ref = useRef(null)
   const reduce = useReducedMotion()
+  // If the preloader handshake is missed, never leave copy clipped off-screen.
+  const play = ready || reduce ? 'show' : 'hidden'
+  const ref = useRef(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
   const yImg = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 120])
   const scale = useTransform(scrollYProgress, [0, 1], [1, reduce ? 1 : 1.08])
@@ -180,8 +181,7 @@ export default function Hero() {
           <motion.div
             variants={panelReveal}
             initial="hidden"
-            whileInView={play}
-            viewport={{ once: true, amount: 0.25 }}
+            animate={play}
             className="border-ink/10 relative mt-10 aspect-[4/5] w-full overflow-hidden rounded-[1.75rem] border lg:hidden"
           >
             <img

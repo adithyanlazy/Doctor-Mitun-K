@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
-import { ArrowRight, MessageCircle } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import Eyebrow from './ui/Eyebrow'
+import { WhatsApp } from './ui/social'
 import { brand, locationsCount } from '../lib/data'
 import { useBooking } from '../lib/bookingContext'
 
@@ -39,11 +40,11 @@ export default function CTASection() {
               </button>
               <a
                 href={`https://wa.me/${brand.whatsapp}`}
-                className="btn btn-ghost-light"
+                className="btn btn-whatsapp"
                 target="_blank"
                 rel="noreferrer"
               >
-                <MessageCircle size={17} /> WhatsApp us
+                <WhatsApp size={17} /> WhatsApp us
               </a>
             </div>
 

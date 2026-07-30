@@ -214,6 +214,17 @@ h4 {
 }
 .btn-gold:hover { background: var(--color-cta-deep); }
 
+/* WhatsApp CTA */
+.btn-whatsapp {
+  background: #25d366;
+  color: #ffffff;
+  box-shadow: 0 12px 30px -12px color-mix(in srgb, #25d366 65%, transparent);
+}
+.btn-whatsapp:hover {
+  background: #1ebe57;
+  box-shadow: 0 16px 36px -12px color-mix(in srgb, #25d366 75%, transparent);
+}
+
 /* secondary accent button — teal */
 .btn-teal {
   background: var(--color-gold);

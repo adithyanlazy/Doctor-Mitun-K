@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { MoveHorizontal, Star, ArrowRight } from 'lucide-react'
+import { Star, ArrowRight } from 'lucide-react'
 import Eyebrow from './ui/Eyebrow'
+import Monogram from './ui/Monogram'
 import Reveal from './ui/Reveal'
 import { brand, cases } from '../lib/data'
 
@@ -46,7 +47,7 @@ function CasePane({ c }) {
           style={{ left: `${pct}%` }}
         >
           <div className="border-gold bg-cream text-emerald absolute left-1/2 top-1/2 grid h-9 w-9 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border shadow-lg">
-            <MoveHorizontal size={15} />
+            <Monogram size={18} strokeWidth={2.4} />
           </div>
         </div>
 
@@ -103,7 +104,7 @@ export default function BeforeAfter({ withViewMore = false }) {
 
         {withViewMore && (
           <div className="mt-10 flex justify-center">
-            <Link to="/results" className="btn btn-outline group">
+            <Link to="/results" className="btn btn-gold group">
               View more results
               <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
             </Link>

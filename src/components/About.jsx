@@ -1,16 +1,9 @@
 import { Check, ArrowRight, Award, BookOpen, Medal, Trophy } from 'lucide-react'
 import Reveal from './ui/Reveal'
 import Eyebrow from './ui/Eyebrow'
-import { Instagram, Facebook, Youtube, Linkedin } from './ui/social'
+import { socialLinks } from './ui/social'
 import { brand, img, credentials, honors } from '../lib/data'
 import { useBooking } from '../lib/bookingContext'
-
-const socials = [
-  { Icon: Instagram, label: 'Instagram' },
-  { Icon: Facebook, label: 'Facebook' },
-  { Icon: Youtube, label: 'YouTube' },
-  { Icon: Linkedin, label: 'LinkedIn' },
-]
 
 const honorIcons = [Medal, Trophy, Award, BookOpen]
 
@@ -81,12 +74,12 @@ export default function About() {
               Book with {brand.short} <ArrowRight size={16} />
             </button>
             <div className="flex items-center gap-2">
-              {socials.map(({ Icon, label }) => (
+              {socialLinks.map(({ Icon, label, className }) => (
                 <a
                   key={label}
                   href="#"
                   aria-label={`${brand.doctor} on ${label}`}
-                  className="grid h-10 w-10 place-items-center rounded-full border border-line text-ink/60 transition-colors hover:border-gold hover:text-gold-deep"
+                  className={`grid h-10 w-10 place-items-center rounded-full transition ${className}`}
                 >
                   <Icon size={17} />
                 </a>

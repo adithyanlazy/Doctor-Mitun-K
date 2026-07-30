@@ -20,7 +20,8 @@ function ScrollReset() {
 }
 
 export default function Layout() {
-  const [loading, setLoading] = useState(true)
+  // Skip the curtain in dev so local previews are never a blank screen behind it.
+  const [loading, setLoading] = useState(import.meta.env.PROD)
   useLenis()
 
   useEffect(() => {
@@ -31,9 +32,13 @@ export default function Layout() {
       scrollTop(true)
       return
     }
-    const t = setTimeout(() => setLoading(false), 2000)
+    const t = setTimeout(() => setLoading(false), 1800)
     return () => clearTimeout(t)
   }, [loading])
+
+  useEffect(() => () => {
+    document.body.style.overflow = ''
+  }, [])
 
   return (
     <BookingProvider>

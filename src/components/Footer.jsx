@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Phone, MessageCircle, Mail } from 'lucide-react'
-import { Instagram, Facebook, Youtube, Linkedin } from './ui/social'
+import { socialLinks } from './ui/social'
 import Monogram from './ui/Monogram'
 import { brand, nav, treatmentTypes, locationsCount } from '../lib/data'
 
@@ -30,12 +30,12 @@ export default function Footer() {
               {locationsCount} partner clinics in {brand.city}.
             </p>
             <div className="mt-6 flex gap-2">
-              {[Instagram, Facebook, Youtube, Linkedin].map((Icon, i) => (
+              {socialLinks.map(({ Icon, label, className }) => (
                 <a
-                  key={i}
+                  key={label}
                   href="#"
-                  aria-label="Social link"
-                  className="grid h-9 w-9 place-items-center rounded-full border border-cream/15 text-cream/70 transition-colors hover:border-gold hover:text-gold-400"
+                  aria-label={`${brand.doctor} on ${label}`}
+                  className={`grid h-9 w-9 place-items-center rounded-full transition ${className}`}
                 >
                   <Icon size={16} />
                 </a>

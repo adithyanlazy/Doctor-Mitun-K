@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { MessageCircle, ArrowUp, X } from 'lucide-react'
+import { ArrowUp, X } from 'lucide-react'
+import { WhatsApp } from './ui/social'
 import { brand } from '../lib/data'
 
 export default function Floating() {
@@ -62,10 +63,10 @@ export default function Floating() {
           target="_blank"
           rel="noreferrer"
           aria-label="Chat on WhatsApp"
-          className="relative grid h-14 w-14 place-items-center rounded-full bg-emerald text-cream shadow-[0_16px_40px_-12px_rgba(20,17,15,0.8)] ring-1 ring-gold/50 transition-transform hover:scale-105"
+          className="relative grid h-14 w-14 place-items-center rounded-full bg-[#25D366] text-white shadow-[0_16px_40px_-12px_rgba(37,211,102,0.55)] ring-1 ring-white/30 transition-transform hover:scale-105"
         >
-          <span className="absolute inset-0 animate-ping rounded-full bg-emerald/40" style={{ animationDuration: '2.6s' }} />
-          <MessageCircle size={24} className="relative" />
+          <span className="absolute inset-0 animate-ping rounded-full bg-[#25D366]/40" style={{ animationDuration: '2.6s' }} />
+          <WhatsApp size={26} className="relative" />
         </a>
       </div>
     </div>

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Plus } from 'lucide-react'
 import Eyebrow from './ui/Eyebrow'
+import { WhatsApp } from './ui/social'
 import { faqs, brand } from '../lib/data'
 
 function Item({ q, a, open, onToggle }) {
@@ -54,7 +55,13 @@ export default function FAQ() {
             Still unsure? Send a question to the booking desk — you will get an answer
             from {brand.short}&rsquo;s team, not a sales script.
           </p>
-          <a href={`https://wa.me/${brand.whatsapp}`} className="btn btn-outline mt-8">
+          <a
+            href={`https://wa.me/${brand.whatsapp}`}
+            target="_blank"
+            rel="noreferrer"
+            className="btn btn-whatsapp mt-8"
+          >
+            <WhatsApp size={18} />
             Ask on WhatsApp
           </a>
         </div>
