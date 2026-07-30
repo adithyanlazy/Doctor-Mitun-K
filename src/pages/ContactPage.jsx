@@ -5,6 +5,7 @@ import Reveal from '../components/ui/Reveal'
 import Eyebrow from '../components/ui/Eyebrow'
 import Practice from '../components/Practice'
 import { brand } from '../lib/data'
+import { openWhatsApp } from '../lib/whatsapp'
 
 const details = [
   { Icon: Phone, label: 'Call', value: brand.phone, href: `tel:${brand.phoneHref}` },
@@ -18,8 +19,15 @@ function Form() {
 
   const submit = (e) => {
     e.preventDefault()
-    const text = `Hi, I'd like to book a consultation with ${brand.doctor}.%0A%0AName: ${f.name}%0APhone: ${f.phone}%0AInterested in: ${f.concern}%0A%0A${f.message}`
-    window.open(`https://wa.me/${brand.whatsapp}?text=${text}`, '_blank', 'noopener')
+    openWhatsApp([
+      `Hi, I'd like to book a consultation with ${brand.doctor}.`,
+      '',
+      `Name: ${f.name}`,
+      `Phone: ${f.phone}`,
+      `Interested in: ${f.concern}`,
+      '',
+      f.message,
+    ])
   }
 
   const field =
@@ -37,7 +45,15 @@ function Form() {
           <label htmlFor="name" className="mb-1.5 block text-sm font-medium text-ink/70">
             Full name
           </label>
-          <input id="name" required value={f.name} onChange={set('name')} className={field} placeholder="Your name" />
+          <input
+            id="name"
+            required
+            autoComplete="name"
+            value={f.name}
+            onChange={set('name')}
+            className={field}
+            placeholder="Your name"
+          />
         </div>
         <div>
           <label htmlFor="phone" className="mb-1.5 block text-sm font-medium text-ink/70">
@@ -46,6 +62,8 @@ function Form() {
           <input
             id="phone"
             type="tel"
+            inputMode="tel"
+            autoComplete="tel"
             required
             value={f.phone}
             onChange={set('phone')}

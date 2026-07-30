@@ -46,7 +46,7 @@ export default function Practice() {
                 <div className="min-w-0">
                   <Link
                     to={`/clinics#${l.slug}`}
-                    className="font-display text-ink hover:text-gold-deep block text-lg leading-snug transition-colors"
+                    className="font-display text-ink hover:text-gold-deep block text-lg leading-snug transition-colors max-sm:py-1.5"
                   >
                     {l.name}
                   </Link>
@@ -57,17 +57,20 @@ export default function Practice() {
                     </p>
                   )}
 
-                  <div className="mt-2.5 flex flex-wrap items-center gap-x-4 gap-y-1">
+                  {/* The three actions are plain text links; on a phone they need
+                      padded hit areas to be thumb-sized, pulled back with a
+                      negative margin so the row keeps its printed rhythm. */}
+                  <div className="mt-2.5 flex flex-wrap items-center gap-x-4 gap-y-1 max-sm:-my-1.5">
                     <button
                       type="button"
                       onClick={() => openBooking(l.slug)}
-                      className="text-gold-deep inline-flex items-center gap-1.5 text-sm font-medium hover:underline"
+                      className="text-gold-deep inline-flex items-center gap-1.5 text-sm font-medium hover:underline max-sm:py-2.5"
                     >
                       Book here
                     </button>
                     <Link
                       to={`/clinics#${l.slug}`}
-                      className="text-ink hover:text-gold-deep inline-flex items-center gap-1.5 text-sm font-medium transition-colors"
+                      className="text-ink hover:text-gold-deep inline-flex items-center gap-1.5 text-sm font-medium transition-colors max-sm:py-2.5"
                     >
                       Details &amp; directions
                       <ArrowUpRight
@@ -80,7 +83,7 @@ export default function Practice() {
                         href={l.mapUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-ink/45 hover:text-gold-deep text-sm transition-colors"
+                        className="text-ink/45 hover:text-gold-deep text-sm transition-colors max-sm:py-2.5"
                       >
                         View on map
                       </a>
@@ -94,7 +97,7 @@ export default function Practice() {
 
         <Link
           to="/clinics"
-          className="text-gold-deep group mt-8 inline-flex items-center gap-2 text-sm font-medium"
+          className="text-gold-deep group mt-8 inline-flex items-center gap-2 text-sm font-medium max-sm:py-2.5"
         >
           All {locationsCount} clinics, with directions and booking
           <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />

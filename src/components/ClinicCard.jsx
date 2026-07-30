@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronDown, MapPin, Clock, Phone, ArrowUpRight, Send } from 'lucide-react'
 import { brand, bookingConcerns, bookingTimes, treatmentTypes } from '../lib/data'
+import { openWhatsApp } from '../lib/whatsapp'
 
 const field =
   'w-full rounded-xl border border-line bg-cream px-4 py-2.5 text-sm text-ink placeholder:text-ink/40 focus:border-emerald focus:outline-none focus:ring-2 focus:ring-emerald/20 transition'
@@ -34,8 +35,7 @@ function BookingForm({ clinic }) {
       `Preferred time: ${f.when}`,
       `For: ${f.concern}`,
     ]
-    const text = encodeURIComponent(lines.join('\n'))
-    window.open(`https://wa.me/${brand.whatsapp}?text=${text}`, '_blank', 'noopener')
+    openWhatsApp(lines)
   }
 
   return (
@@ -53,6 +53,7 @@ function BookingForm({ clinic }) {
           <input
             id={`${uid}-name`}
             required
+            autoComplete="name"
             value={f.name}
             onChange={set('name')}
             className={field}
@@ -66,6 +67,8 @@ function BookingForm({ clinic }) {
           <input
             id={`${uid}-phone`}
             type="tel"
+            inputMode="tel"
+            autoComplete="tel"
             required
             value={f.phone}
             onChange={set('phone')}
@@ -112,6 +115,44 @@ function BookingForm({ clinic }) {
         </p>
       </div>
     </form>
+  )
+}
+
+/**
+ * The embedded map, with a shield over it until it is asked for.
+ *
+ * A Google Maps iframe eats every touch that lands on it, so a finger swiping
+ * down the page over a 224px-tall map pans the map instead of scrolling — the
+ * card becomes a dead end on a phone. The shield takes that first touch and
+ * only then hands the map over. Desktop, which scrolls with a wheel, is left
+ * alone.
+ */
+function Map({ clinic }) {
+  const [live, setLive] = useState(false)
+
+  return (
+    <div className="border-line relative mt-5 overflow-hidden rounded-xl border">
+      <iframe
+        title={`Map — ${clinic.name}`}
+        src={`https://www.google.com/maps?q=${encodeURIComponent(clinic.mapQuery)}&output=embed`}
+        loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
+        className={`block h-56 w-full border-0 grayscale-[0.25] ${
+          live ? '' : 'pointer-events-none sm:pointer-events-auto'
+        }`}
+      />
+      {!live && (
+        <button
+          type="button"
+          onClick={() => setLive(true)}
+          className="bg-emerald/0 active:bg-emerald/5 absolute inset-0 grid place-items-end justify-items-center pb-3 transition-colors sm:hidden"
+        >
+          <span className="bg-emerald/80 text-cream rounded-full px-3 py-1.5 text-xs font-medium backdrop-blur-sm">
+            Tap to move the map
+          </span>
+        </button>
+      )}
+    </div>
   )
 }
 
@@ -227,29 +268,21 @@ export default function ClinicCard({ clinic, index, open, onToggle, highlighted 
                   </ul>
                   <Link
                     to="/treatments"
-                    className="text-gold-deep mt-3 inline-flex items-center gap-1.5 text-sm font-medium hover:underline"
+                    className="text-gold-deep mt-3 inline-flex items-center gap-1.5 text-sm font-medium hover:underline max-sm:py-2"
                   >
                     What each involves
                     <ArrowUpRight size={14} />
                   </Link>
                 </div>
 
-                <div className="border-line mt-5 overflow-hidden rounded-xl border">
-                  <iframe
-                    title={`Map — ${clinic.name}`}
-                    src={`https://www.google.com/maps?q=${encodeURIComponent(clinic.mapQuery)}&output=embed`}
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    className="block h-56 w-full border-0 grayscale-[0.25]"
-                  />
-                </div>
+                <Map clinic={clinic} />
 
                 {clinic.mapUrl && (
                   <a
                     href={clinic.mapUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-ink/55 hover:text-gold-deep mt-3 inline-flex items-center gap-1.5 text-sm transition-colors"
+                    className="text-ink/55 hover:text-gold-deep mt-3 inline-flex items-center gap-1.5 text-sm transition-colors max-sm:py-2"
                   >
                     Open in Google Maps
                     <ArrowUpRight size={14} />

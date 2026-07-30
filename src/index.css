@@ -348,6 +348,31 @@ h4 {
   border: 2px solid var(--color-cream);
 }
 
+/* ---------- touch & small screens ----------
+   Phone-specific corrections; everything above is shared with desktop. */
+@media (max-width: 640px) {
+  /* iOS Safari zooms the whole page when a focused field is under 16px, and
+     does not zoom back out. Every field on this site was 14px. */
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+  /* two CTAs side by side have to survive a 375px column */
+  .btn {
+    padding: 0.85rem 1.35rem;
+    font-size: 0.92rem;
+  }
+}
+
+/* A tap on a touch device leaves :hover stuck on the element, which would park
+   the marquee for the rest of the visit. */
+@media (hover: none) {
+  .marquee-track:hover .animate-marquee {
+    animation-play-state: running;
+  }
+}
+
 /* ---------- reduced motion ----------
    Intentionally NOT globally disabling animation here: this is a marketing
    demo where the motion is core to the brand experience, so entrance

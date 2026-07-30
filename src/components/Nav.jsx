@@ -5,6 +5,7 @@ import { Menu, X, Phone } from 'lucide-react'
 import Monogram from './ui/Monogram'
 import { brand, nav } from '../lib/data'
 import { useBooking } from '../lib/bookingContext'
+import { lockScroll } from '../lib/useLenis'
 
 /** Mark + wordmark, set to match the supplied logo lockup: wide-tracked caps. */
 function Logo({ dark }) {
@@ -40,8 +41,11 @@ export default function Nav() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  // Lenis keeps driving the page behind the drawer unless it is stopped too —
+  // hiding body overflow alone left the page scrolling under the open menu.
   useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : ''
+    lockScroll(open)
+    return () => lockScroll(false)
   }, [open])
 
   return (
@@ -100,6 +104,20 @@ export default function Nav() {
             >
               Book now
             </button>
+            {/* On a phone the wordmark leaves no room for the "Book now" pill, and
+                calling is the action most visitors want — so the bar carries a
+                dial button instead, sized for a thumb. */}
+            <a
+              href={`tel:${brand.phoneHref}`}
+              aria-label={`Call ${brand.doctor}`}
+              className={`grid h-11 w-11 place-items-center rounded-full border transition-colors lg:hidden ${
+                dark
+                  ? 'border-line bg-ivory/80 text-emerald'
+                  : 'border-cream/25 bg-cream/10 text-cream'
+              }`}
+            >
+              <Phone size={18} />
+            </a>
             <button
               type="button"
               onClick={() => setOpen(true)}
@@ -135,7 +153,12 @@ export default function Nav() {
                 <X size={26} />
               </button>
             </div>
-            <div className="container-x relative z-[2] flex flex-1 flex-col justify-center gap-1">
+            {/* Eight entries plus the CTA do not fit between the header and the
+                bottom of a short phone (an iPhone SE is 568px of usable height),
+                so the index scrolls on its own and the booking button is parked
+                below it — the one action worth keeping in reach is never the
+                thing that scrolls off. */}
+            <div className="container-x relative z-[2] flex flex-1 flex-col justify-center gap-1 overflow-y-auto overscroll-contain py-6">
               {nav.map((n, i) => (
                 <motion.div
                   key={n.to}
@@ -147,7 +170,7 @@ export default function Nav() {
                     to={n.to}
                     onClick={() => setOpen(false)}
                     className={({ isActive }) =>
-                      `font-display flex items-baseline gap-4 border-b border-cream/10 py-4 text-3xl ${isActive ? 'text-gold-400' : 'text-cream'}`
+                      `font-display flex items-baseline gap-4 border-b border-cream/10 py-3.5 text-[1.75rem] sm:py-4 sm:text-3xl ${isActive ? 'text-gold-400' : 'text-cream'}`
                     }
                   >
                     <span className="font-mono text-sm text-gold-400/80">{String(i + 1).padStart(2, '0')}</span>
@@ -155,13 +178,16 @@ export default function Nav() {
                   </NavLink>
                 </motion.div>
               ))}
+            </div>
+
+            <div className="container-x relative z-[2] pb-[max(1.5rem,calc(env(safe-area-inset-bottom)+0.75rem))] pt-2">
               <button
                 type="button"
                 onClick={() => {
                   setOpen(false)
                   openBooking()
                 }}
-                className="btn btn-gold mt-8 w-full py-4 text-base"
+                className="btn btn-gold w-full py-4 text-base"
               >
                 Book a consultation
               </button>

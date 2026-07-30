@@ -12,6 +12,7 @@ import {
 } from '../lib/data'
 import { useBooking } from '../lib/bookingContext'
 import { lockScroll } from '../lib/useLenis'
+import { openWhatsApp } from '../lib/whatsapp'
 import {
   BOOKING_WINDOW_DAYS,
   CLOSED,
@@ -176,11 +177,7 @@ export default function BookingPanel() {
       `Preferred time: ${f.when}`,
       `For: ${f.concern}`,
     ]
-    window.open(
-      `https://wa.me/${brand.whatsapp}?text=${encodeURIComponent(lines.join('\n'))}`,
-      '_blank',
-      'noopener',
-    )
+    openWhatsApp(lines)
     setSent(true)
   }
 
@@ -208,12 +205,15 @@ export default function BookingPanel() {
             onClick={closeBooking}
           />
 
+          {/* max-h is dvh, not vh: on a phone `vh` measures the viewport with the
+              address bar collapsed, so the card ran under the browser chrome and
+              the submit button sat below the fold. */}
           <motion.div
             role="dialog"
             aria-modal="true"
             aria-labelledby="booking-title"
             data-lenis-prevent
-            className="bg-cream border-line relative max-h-[92vh] w-full max-w-[30rem] overflow-y-auto rounded-[1.75rem] border p-6 shadow-[0_40px_90px_-40px_rgba(7,20,38,0.7)] sm:p-8"
+            className="bg-cream border-line relative max-h-[92dvh] w-full max-w-[30rem] overflow-y-auto overscroll-contain rounded-[1.75rem] border p-5 shadow-[0_40px_90px_-40px_rgba(7,20,38,0.7)] sm:p-8"
             initial={{ opacity: 0, y: 24, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.98 }}
@@ -272,7 +272,7 @@ export default function BookingPanel() {
                         key={c}
                         type="button"
                         onClick={() => changeCity(c)}
-                        className={`rounded-full border px-3.5 py-1.5 text-xs font-medium transition ${
+                        className={`rounded-full border px-4 py-2.5 text-xs font-medium transition sm:py-1.5 ${
                           city === c
                             ? 'border-transparent bg-emerald text-cream'
                             : 'border-line text-ink/65 hover:border-gold hover:text-gold-deep'
@@ -316,7 +316,10 @@ export default function BookingPanel() {
                     </label>
                   </div>
 
-                  <ul data-lenis-prevent className="mt-2.5 max-h-52 space-y-2 overflow-y-auto pr-1">
+                  <ul
+                    data-lenis-prevent
+                    className="mt-2.5 max-h-52 space-y-2 overflow-y-auto overscroll-contain pr-1"
+                  >
                     <li>
                       <button
                         type="button"
@@ -377,6 +380,7 @@ export default function BookingPanel() {
                   <input
                     id="bk-name"
                     required
+                    autoComplete="name"
                     value={f.name}
                     onChange={set('name')}
                     className={field}
@@ -393,6 +397,7 @@ export default function BookingPanel() {
                       id="bk-phone"
                       type="tel"
                       inputMode="tel"
+                      autoComplete="tel"
                       required
                       value={f.phone}
                       onChange={set('phone')}

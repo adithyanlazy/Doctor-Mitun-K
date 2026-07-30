@@ -8,8 +8,11 @@ export default function PageHero({ eyebrow, title, titleEm, sub, crumb }) {
     <section className="mesh-emerald grain relative overflow-hidden pb-16 pt-36 md:pb-20 md:pt-44">
       <div className="pointer-events-none absolute -right-32 -top-24 h-[26rem] w-[26rem] rounded-full bg-gold/10 blur-3xl" />
       <div className="container-x relative z-[2]">
-        <nav className="mb-7 flex items-center gap-1.5 text-sm text-emerald-200/70" aria-label="Breadcrumb">
-          <Link to="/" className="transition-colors hover:text-cream">
+        <nav
+          className="mb-7 flex items-center gap-1.5 text-sm text-emerald-200/70 max-sm:-mt-2"
+          aria-label="Breadcrumb"
+        >
+          <Link to="/" className="transition-colors hover:text-cream max-sm:py-2.5">
             Home
           </Link>
           <ChevronRight size={14} />

@@ -19,7 +19,8 @@ export default function Floating() {
   }, [])
 
   return (
-    <div className="fixed bottom-5 right-5 z-[90] flex flex-col items-end gap-3">
+    // bottom offset clears the iOS home indicator / Android gesture bar
+    <div className="fixed bottom-[max(1.25rem,calc(env(safe-area-inset-bottom)+0.5rem))] right-5 z-[90] flex max-w-[calc(100vw-2.5rem)] flex-col items-end gap-3">
       <AnimatePresence>
         {showTop && (
           <motion.button

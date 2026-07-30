@@ -46,12 +46,16 @@ function CasePane({ c }) {
           className="bg-cream/90 pointer-events-none absolute inset-y-0 z-[3] w-px"
           style={{ left: `${pct}%` }}
         >
-          <div className="border-gold bg-cream text-emerald absolute left-1/2 top-1/2 grid h-9 w-9 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border shadow-lg">
-            <Monogram size={18} strokeWidth={2.4} />
+          <div className="border-gold bg-cream text-emerald absolute left-1/2 top-1/2 grid h-11 w-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border shadow-lg sm:h-9 sm:w-9">
+            <Monogram size={20} strokeWidth={2.4} />
           </div>
         </div>
 
-        {/* the input drives it: mouse, touch and keyboard */}
+        {/* The input drives it: mouse, touch and keyboard. `touch-action: pan-y`
+            is what keeps a finger swiping down the page from being swallowed by
+            the slider — without it the images trap vertical scrolling on a
+            phone, and three of them in a column is a wall the visitor
+            cannot get past. */}
         <input
           type="range"
           min="0"
@@ -59,7 +63,7 @@ function CasePane({ c }) {
           value={pct}
           onChange={(e) => setPct(Number(e.target.value))}
           aria-label={`${c.label} — reveal before and after`}
-          className="absolute inset-0 z-[4] h-full w-full cursor-ew-resize opacity-0"
+          className="absolute inset-0 z-[4] h-full w-full cursor-ew-resize opacity-0 [touch-action:pan-y]"
         />
       </div>
 

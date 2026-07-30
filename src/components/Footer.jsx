@@ -35,9 +35,9 @@ export default function Footer() {
                   key={label}
                   href="#"
                   aria-label={`${brand.doctor} on ${label}`}
-                  className={`grid h-9 w-9 place-items-center rounded-full transition ${className}`}
+                  className={`grid h-11 w-11 place-items-center rounded-full transition sm:h-9 sm:w-9 ${className}`}
                 >
-                  <Icon size={16} />
+                  <Icon size={17} />
                 </a>
               ))}
             </div>
@@ -49,7 +49,10 @@ export default function Footer() {
             <ul className="mt-5 space-y-3 text-sm">
               {nav.map((n) => (
                 <li key={n.to}>
-                  <Link to={n.to} className="text-emerald-200/85 transition-colors hover:text-cream">
+                  <Link
+                    to={n.to}
+                    className="text-emerald-200/85 inline-block transition-colors hover:text-cream max-sm:py-1.5"
+                  >
                     {n.label}
                   </Link>
                 </li>
@@ -63,7 +66,10 @@ export default function Footer() {
             <ul className="mt-5 space-y-3 text-sm">
               {treatmentTypes.map((t) => (
                 <li key={t.name}>
-                  <Link to="/treatments" className="text-emerald-200/85 transition-colors hover:text-cream">
+                  <Link
+                    to="/treatments"
+                    className="text-emerald-200/85 inline-block transition-colors hover:text-cream max-sm:py-1.5"
+                  >
                     {t.name}
                   </Link>
                 </li>
@@ -82,18 +88,35 @@ export default function Footer() {
               </li>
             </ul>
             <h4 className="eyebrow text-gold-400 mt-8">Contact</h4>
-            <ul className="mt-5 space-y-4 text-sm text-emerald-200/85">
-              <li className="flex gap-3">
-                <Phone size={17} className="shrink-0 text-gold-400" />
-                <a href={`tel:${brand.phoneHref}`} className="tabular hover:text-cream">{brand.phone}</a>
+            {/* Call, WhatsApp and email are the three things a visitor on a phone
+                actually reaches for — each row is a full-height tap target. */}
+            <ul className="mt-4 space-y-1 text-sm text-emerald-200/85 sm:mt-5 sm:space-y-4">
+              <li>
+                <a
+                  href={`tel:${brand.phoneHref}`}
+                  className="tabular flex min-h-11 items-center gap-3 hover:text-cream sm:min-h-0"
+                >
+                  <Phone size={17} className="shrink-0 text-gold-400" />
+                  {brand.phone}
+                </a>
               </li>
-              <li className="flex gap-3">
-                <MessageCircle size={17} className="shrink-0 text-gold-400" />
-                <a href={`https://wa.me/${brand.whatsapp}`} className="hover:text-cream">WhatsApp us</a>
+              <li>
+                <a
+                  href={`https://wa.me/${brand.whatsapp}`}
+                  className="flex min-h-11 items-center gap-3 hover:text-cream sm:min-h-0"
+                >
+                  <MessageCircle size={17} className="shrink-0 text-gold-400" />
+                  WhatsApp us
+                </a>
               </li>
-              <li className="flex gap-3">
-                <Mail size={17} className="shrink-0 text-gold-400" />
-                <a href={`mailto:${brand.email}`} className="hover:text-cream">{brand.email}</a>
+              <li>
+                <a
+                  href={`mailto:${brand.email}`}
+                  className="flex min-h-11 items-center gap-3 break-all hover:text-cream sm:min-h-0"
+                >
+                  <Mail size={17} className="shrink-0 text-gold-400" />
+                  {brand.email}
+                </a>
               </li>
             </ul>
           </div>
