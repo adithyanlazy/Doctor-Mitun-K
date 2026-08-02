@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowUp, X } from 'lucide-react'
 import { WhatsApp } from './ui/social'
 import { brand } from '../lib/data'
+import { scrollTop } from '../lib/useLenis'
 
 export default function Floating() {
   const [showTop, setShowTop] = useState(false)
@@ -25,7 +26,7 @@ export default function Floating() {
         {showTop && (
           <motion.button
             type="button"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            onClick={() => scrollTop(false)}
             aria-label="Back to top"
             initial={{ opacity: 0, scale: 0.6 }}
             animate={{ opacity: 1, scale: 1 }}

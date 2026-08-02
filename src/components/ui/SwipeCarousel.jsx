@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useReducedMotion } from 'framer-motion'
 
 const AUTO_MS = 5000
@@ -6,6 +6,10 @@ const RESUME_MS = AUTO_MS * 2
 
 const DEFAULT_SLIDE_CLASS =
   'w-[min(100%,22rem)] shrink-0 snap-center sm:w-[min(88%,26rem)]'
+
+function getMiddleIndex(length) {
+  return length > 0 ? Math.floor((length - 1) / 2) : 0
+}
 
 /**
  * Horizontal snap carousel with auto-advance, dot nav, and pause on interaction.
@@ -21,18 +25,24 @@ export default function SwipeCarousel({
   getItemKey,
   getDotLabel,
 }) {
+  const rootRef = useRef(null)
   const trackRef = useRef(null)
   const pauseTimerRef = useRef(null)
   const pausedRef = useRef(false)
-  const [active, setActive] = useState(0)
+  const visibleRef = useRef(false)
+  const middleIndex = getMiddleIndex(items.length)
+  const [active, setActive] = useState(middleIndex)
   const reduce = useReducedMotion()
 
+  // scrollIntoView also moves the page vertically when the carousel is off-screen,
+  // which reads as the site fighting your finger on a phone. Scroll the track only.
   const scrollToIndex = useCallback(
     (index, behavior = reduce ? 'auto' : 'smooth') => {
       const track = trackRef.current
       const slide = track?.children[index]
-      if (!slide) return
-      slide.scrollIntoView({ behavior, inline: 'center', block: 'nearest' })
+      if (!track || !slide) return
+      const left = slide.offsetLeft - (track.clientWidth - slide.clientWidth) / 2
+      track.scrollTo({ left, behavior })
       setActive(index)
     },
     [reduce],
@@ -49,6 +59,10 @@ export default function SwipeCarousel({
       pausedRef.current = false
     }, RESUME_MS)
   }, [])
+
+  useLayoutEffect(() => {
+    scrollToIndex(middleIndex, 'auto')
+  }, [middleIndex, scrollToIndex])
 
   useEffect(() => {
     const track = trackRef.current
@@ -84,10 +98,24 @@ export default function SwipeCarousel({
   }, [])
 
   useEffect(() => {
+    const root = rootRef.current
+    if (!root) return undefined
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        visibleRef.current = entry.isIntersecting
+      },
+      { threshold: 0.2 },
+    )
+    observer.observe(root)
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
     if (reduce) return undefined
 
     const id = window.setInterval(() => {
-      if (pausedRef.current) return
+      if (pausedRef.current || !visibleRef.current) return
       setActive((prev) => {
         const next = (prev + 1) % items.length
         scrollToIndex(next)
@@ -107,6 +135,7 @@ export default function SwipeCarousel({
 
   return (
     <div
+      ref={rootRef}
       className="relative"
       onMouseEnter={pauseAuto}
       onMouseLeave={resumeAutoLater}
@@ -115,10 +144,11 @@ export default function SwipeCarousel({
     >
       <div
         ref={trackRef}
+        data-lenis-prevent
         role="region"
         aria-roledescription="carousel"
         aria-label={ariaLabel}
-        className={`flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${trackClassName}`}
+        className={`flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 [touch-action:pan-x] [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${trackClassName}`}
         style={{ paddingInline: `max(0px, calc((100% - min(100%, ${centerSlideAt})) / 2))` }}
         onTouchStart={pauseAuto}
         onTouchEnd={resumeAutoLater}

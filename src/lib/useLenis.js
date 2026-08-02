@@ -6,7 +6,7 @@ let lenisInstance = null
 /** Jump to top instantly on route change (Lenis-aware). */
 export function scrollTop(immediate = true) {
   if (lenisInstance) lenisInstance.scrollTo(0, { immediate })
-  else window.scrollTo(0, 0)
+  else window.scrollTo({ top: 0, behavior: immediate ? 'auto' : 'smooth' })
 }
 
 /** Smooth-scroll to an element, clearing the fixed header (Lenis-aware). */
@@ -28,15 +28,19 @@ export function lockScroll(locked) {
 }
 
 /**
- * Smooth-scroll via Lenis. Respects prefers-reduced-motion (skips init).
+ * Smooth-scroll via Lenis on desktop wheel/trackpad only. Touch devices keep
+ * native momentum — Lenis on phone was fighting finger scroll and felt like the
+ * page snapping up or down against you.
  */
 export function useLenis() {
   useEffect(() => {
+    const touch = window.matchMedia('(pointer: coarse)').matches
+    if (touch) return undefined
+
     const lenis = new Lenis({
       duration: 1.1,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      touchMultiplier: 1.6,
     })
     lenisInstance = lenis
 

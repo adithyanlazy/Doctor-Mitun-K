@@ -157,7 +157,10 @@ export default function Nav() {
                 so the index scrolls on its own and the booking button is parked
                 below it — the one action worth keeping in reach is never the
                 thing that scrolls off. */}
-            <div className="container-x relative z-[2] flex flex-1 flex-col justify-center gap-1 overflow-y-auto overscroll-contain py-6">
+            <div
+              data-lenis-prevent
+              className="container-x relative z-[2] flex flex-1 flex-col justify-center gap-1 overflow-y-auto overscroll-contain py-6"
+            >
               {nav.map((n, i) => (
                 <motion.div
                   key={n.to}
